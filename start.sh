@@ -9,7 +9,7 @@ cd /var/www/html
 
 # Override critical values from Render environment variables
 sed -i "s|^APP_ENV=.*|APP_ENV=${APP_ENV:-production}|" .env
-sed -i "s|^APP_DEBUG=.*|APP_DEBUG=${APP_DEBUG:-false}|" .env
+sed -i "s|^APP_DEBUG=.*|APP_DEBUG=${APP_DEBUG:-true}|" .env
 sed -i "s|^APP_URL=.*|APP_URL=${APP_URL:-http://localhost}|" .env
 sed -i "s|^DB_CONNECTION=.*|DB_CONNECTION=${DB_CONNECTION:-sqlite}|" .env
 sed -i "s|^SESSION_DRIVER=.*|SESSION_DRIVER=${SESSION_DRIVER:-file}|" .env
@@ -56,6 +56,7 @@ php artisan route:cache  || echo "Route cache warning (non-fatal)"
 php artisan view:cache   || echo "View cache warning (non-fatal)"
 
 # ── 8. Fix permissions ────────────────────────────────────────────────────────
+mkdir -p /var/www/html/storage/logs
 chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
