@@ -159,9 +159,10 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         Route::post('/restore/{id}',       [AttendanceController::class, 'restore']) ->name('restore');
     });
 
-    Route::get('/sermons',  [SermonController::class, 'adminIndex'])->name('sermons.index');
-    Route::post('/sermons', [SermonController::class, 'store'])     ->name('sermons.store');
-    Route::post('/sermons/{sermon}/approve', [SermonController::class, 'approve'])->name('sermons.approve');
+    Route::get('/sermons',                   [SermonController::class, 'adminIndex'])->name('sermons.index');
+    Route::post('/sermons',                  [SermonController::class, 'store'])     ->name('sermons.store');
+    Route::post('/sermons/{sermon}/approve', [SermonController::class, 'approve'])   ->name('sermons.approve');
+    Route::delete('/sermons/{sermon}',       [SermonController::class, 'destroy'])   ->name('sermons.destroy');
 
     Route::get('/volunteering',  [VolunteerController::class, 'adminIndex'])->name('volunteering.index');
     Route::post('/volunteering', [VolunteerController::class, 'store'])     ->name('volunteering.store');
@@ -308,13 +309,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/messages/create',    [MessagesController::class, 'create'])->name('messages.create');
     Route::post('/messages',          [MessagesController::class, 'store']) ->name('messages.store');
     Route::get('/messages/{message}', [MessagesController::class, 'show'])  ->name('messages.show');
-});
-
-// TEMP — approve admin, delete after use
-Route::get('/approve-admin', function () {
-    $user = \App\Models\User::where('email', 'admin@church.com')->first();
-    if (!$user) return 'Admin not found.';
-    $user->update(['is_approved' => true]);
-    return 'Admin approved! You can log in now. DELETE THIS ROUTE!';
 });
 

@@ -1,4 +1,4 @@
-@extends('admin.Layout.app')
+@extends('admin.layout.app')
 @section('title', 'Child Check-In Kiosk — ' . App\Models\Setting::get('church_name', 'Grace Church'))
 
 @section('content')

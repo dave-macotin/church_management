@@ -1,4 +1,4 @@
-@extends('admin.Layout.app')
+@extends('admin.layout.app')
 @section('title', 'System Users — Grace Church CMS')
 
 @section('content')

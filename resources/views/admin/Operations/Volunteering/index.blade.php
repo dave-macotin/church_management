@@ -1,4 +1,4 @@
-@extends('admin.Layout.app')
+@extends('admin.layout.app')
 @section('title', 'Volunteer Management — ' . App\Models\Setting::get('church_name', 'Grace Church'))
 
 @section('content')
