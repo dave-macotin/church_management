@@ -49,17 +49,23 @@ COPY . .
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # Install frontend dependencies and build Vite assets
-RUN npm install
-RUN npm run build
+RUN npm install && npm run build
 
-# Create storage symlink for public files
-RUN php artisan storage:link || true
+# Ensure database directory exists and is writable (for SQLite)
+RUN mkdir -p database \
+    && touch database/database.sqlite \
+    && chown -R www-data:www-data database
 
-# Set permissions
+# Set permissions for storage and cache
 RUN mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views bootstrap/cache public/uploads \
-    && chown -R www-data:www-data storage bootstrap/cache public/uploads \
-    && chmod -R 775 storage bootstrap/cache public/uploads
+    && chown -R www-data:www-data storage bootstrap/cache public/uploads database \
+    && chmod -R 775 storage bootstrap/cache public/uploads database
+
+# Copy and prepare startup script
+COPY start.sh /start.sh
+RUN chmod +x /start.sh \
+    && chown www-data:www-data /start.sh
 
 EXPOSE 10000
 
-CMD ["apache2-foreground"]
+CMD ["/start.sh"]
