@@ -37,8 +37,9 @@ if grep -q "DB_CONNECTION=sqlite" .env; then
     chown www-data:www-data /var/www/html/database/database.sqlite
 fi
 
-# ── 4. Run migrations ────────────────────────────────────────────────────────
+# ── 4. Run migrations & seed (insertOrIgnore = safe to run every deploy) ─────
 php artisan migrate --force
+php artisan db:seed --force
 
 # ── 5. Cache config for performance ─────────────────────────────────────────
 php artisan config:cache
