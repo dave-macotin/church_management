@@ -11,7 +11,7 @@ class MessagesController extends Controller
 {
     public function index()
     {
-        $layout = auth()->user()->role === 'admin' ? 'admin.Layout.app' : (auth()->user()->role === 'staff' ? 'staff.layout.app' : 'member.layout.app');
+        $layout = $this->layoutFor(auth()->user()->role);
         $messages = Message::where('receiver_id', auth()->id())
             ->with('sender')
             ->latest()
@@ -22,7 +22,7 @@ class MessagesController extends Controller
 
     public function create()
     {
-        $layout = auth()->user()->role === 'admin' ? 'admin.Layout.app' : (auth()->user()->role === 'staff' ? 'staff.layout.app' : 'member.layout.app');
+        $layout = $this->layoutFor(auth()->user()->role);
         $users = User::where('id', '!=', auth()->id())->get();
         return view('messages.create', compact('users', 'layout'));
     }
@@ -47,7 +47,7 @@ class MessagesController extends Controller
 
     public function show(Message $message)
     {
-        $layout = auth()->user()->role === 'admin' ? 'admin.Layout.app' : (auth()->user()->role === 'staff' ? 'staff.layout.app' : 'member.layout.app');
+        $layout = $this->layoutFor(auth()->user()->role);
         if ($message->receiver_id !== auth()->id() && $message->sender_id !== auth()->id()) {
             abort(403);
         }
@@ -57,5 +57,14 @@ class MessagesController extends Controller
         }
 
         return view('messages.show', compact('message', 'layout'));
+    }
+
+    private function layoutFor(string $role): string
+    {
+        return match($role) {
+            'admin' => 'admin.layout.app',
+            'staff' => 'staff.layout.app',
+            default => 'member.layout.app',
+        };
     }
 }

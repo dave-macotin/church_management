@@ -97,8 +97,8 @@ class SermonController extends Controller
     private function layoutFor(string $role): string
     {
         return match($role) {
-            'admin' => 'admin.Layout.app',
-            'staff' => 'admin.Layout.app',
+            'admin' => 'admin.layout.app',
+            'staff' => 'admin.layout.app',
             default => 'member.layout.app',
         };
     }
