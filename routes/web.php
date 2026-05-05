@@ -310,3 +310,23 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/messages/{message}', [MessagesController::class, 'show'])  ->name('messages.show');
 });
 
+/*
+|--------------------------------------------------------------------------
+| Temporary Setup Route — DELETE AFTER USE
+|--------------------------------------------------------------------------
+*/
+Route::get('/setup-admin', function () {
+    if (\App\Models\User::where('email', 'admin@church.com')->exists()) {
+        return 'Admin already exists! You can delete this route now.';
+    }
+
+    \App\Models\User::create([
+        'name'     => 'Admin User',
+        'email'    => 'admin@church.com',
+        'password' => bcrypt('password'),
+        'role'     => 'admin',
+    ]);
+
+    return 'Admin account created! Email: admin@church.com / Password: password — NOW DELETE THIS ROUTE!';
+});
+
