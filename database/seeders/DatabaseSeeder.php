@@ -87,9 +87,9 @@ class DatabaseSeeder extends Seeder
 
         // Users (auth)
         DB::table('users')->insertOrIgnore([
-            ['name' => 'Admin User', 'email' => 'admin@church.com', 'password' => Hash::make('password'), 'role' => 'admin', 'MemberID' => null, 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Staff User', 'email' => 'staff@church.com', 'password' => Hash::make('password'), 'role' => 'staff', 'MemberID' => 1, 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Juan Santos', 'email' => 'juan@church.com', 'password' => Hash::make('password'), 'role' => 'member', 'MemberID' => 1, 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Admin User', 'email' => 'admin@church.com', 'password' => Hash::make('password'), 'role' => 'admin', 'is_approved' => true, 'MemberID' => null, 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Staff User', 'email' => 'staff@church.com', 'password' => Hash::make('password'), 'role' => 'staff', 'is_approved' => true, 'MemberID' => 1, 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Juan Santos', 'email' => 'juan@church.com', 'password' => Hash::make('password'), 'role' => 'member', 'is_approved' => true, 'MemberID' => 1, 'created_at' => now(), 'updated_at' => now()],
         ]);
     }
 }

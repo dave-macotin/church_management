@@ -41,6 +41,13 @@ fi
 php artisan migrate --force
 php artisan db:seed --force
 
+# Force-approve seed accounts in case they existed before this fix
+php artisan tinker --execute="
+\App\Models\User::whereIn('email', ['admin@church.com','staff@church.com','juan@church.com'])
+    ->update(['is_approved' => true]);
+echo 'Seed accounts approved.';
+"
+
 # ── 5. Cache config for performance ─────────────────────────────────────────
 php artisan config:cache
 php artisan route:cache
