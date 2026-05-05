@@ -310,3 +310,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/messages/{message}', [MessagesController::class, 'show'])  ->name('messages.show');
 });
 
+// TEMP — approve admin, delete after use
+Route::get('/approve-admin', function () {
+    $user = \App\Models\User::where('email', 'admin@church.com')->first();
+    if (!$user) return 'Admin not found.';
+    $user->update(['is_approved' => true]);
+    return 'Admin approved! You can log in now. DELETE THIS ROUTE!';
+});
+
