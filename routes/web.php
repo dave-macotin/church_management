@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\People\MemberController;
@@ -311,14 +310,3 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/messages/{message}', [MessagesController::class, 'show'])  ->name('messages.show');
 });
 
-/*
-|--------------------------------------------------------------------------
-| Utility / Debug Routes (local only)
-|--------------------------------------------------------------------------
-*/
-Route::get('/clear-users', function () {
-    DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-    \App\Models\User::truncate();
-    DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-    return 'All users deleted!';
-});
