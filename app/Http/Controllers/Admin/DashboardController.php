@@ -57,28 +57,38 @@ class DashboardController extends Controller
                             ->limit(5)
                             ->get();
 
-        // Analytics for Charts
+        // Analytics for Charts (Using Collections for DB agnostic compatibility)
         $monthlyGiving = DB::table('donations')
-            ->select(
-                DB::raw("DATE_FORMAT(Date, '%b') as month"),
-                DB::raw("DATE_FORMAT(Date, '%Y%m') as month_sort"),
-                DB::raw("SUM(Amount) as total")
-            )
             ->where('Date', '>=', now()->subMonths(5))
-            ->groupBy('month', 'month_sort')
-            ->orderBy('month_sort')
-            ->get();
+            ->get()
+            ->groupBy(function ($item) {
+                return Carbon::parse($item->Date)->format('Ym');
+            })
+            ->map(function ($group) {
+                return (object)[
+                    'month' => Carbon::parse($group->first()->Date)->format('M'),
+                    'month_sort' => Carbon::parse($group->first()->Date)->format('Ym'),
+                    'total' => $group->sum('Amount'),
+                ];
+            })
+            ->sortBy('month_sort')
+            ->values();
 
         $attendanceTrends = DB::table('attendances')
-            ->select(
-                DB::raw("DATE_FORMAT(Timestamp, '%b') as month"),
-                DB::raw("DATE_FORMAT(Timestamp, '%Y%m') as month_sort"),
-                DB::raw("COUNT(*) as total")
-            )
             ->where('Timestamp', '>=', now()->subMonths(5))
-            ->groupBy('month', 'month_sort')
-            ->orderBy('month_sort')
-            ->get();
+            ->get()
+            ->groupBy(function ($item) {
+                return Carbon::parse($item->Timestamp)->format('Ym');
+            })
+            ->map(function ($group) {
+                return (object)[
+                    'month' => Carbon::parse($group->first()->Timestamp)->format('M'),
+                    'month_sort' => Carbon::parse($group->first()->Timestamp)->format('Ym'),
+                    'total' => $group->count(),
+                ];
+            })
+            ->sortBy('month_sort')
+            ->values();
 
         return view('admin.dashboard', compact(
             'totalMembers',
