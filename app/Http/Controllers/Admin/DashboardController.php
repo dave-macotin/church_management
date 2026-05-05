@@ -59,17 +59,25 @@ class DashboardController extends Controller
 
         // Analytics for Charts
         $monthlyGiving = DB::table('donations')
-            ->select(DB::raw("DATE_FORMAT(Date, '%b') as month"), DB::raw("SUM(Amount) as total"))
+            ->select(
+                DB::raw("DATE_FORMAT(Date, '%b') as month"),
+                DB::raw("DATE_FORMAT(Date, '%Y%m') as month_sort"),
+                DB::raw("SUM(Amount) as total")
+            )
             ->where('Date', '>=', now()->subMonths(5))
-            ->groupBy('month')
-            ->orderBy('Date')
+            ->groupBy('month', 'month_sort')
+            ->orderBy('month_sort')
             ->get();
 
         $attendanceTrends = DB::table('attendances')
-            ->select(DB::raw("DATE_FORMAT(Timestamp, '%b') as month"), DB::raw("COUNT(*) as total"))
+            ->select(
+                DB::raw("DATE_FORMAT(Timestamp, '%b') as month"),
+                DB::raw("DATE_FORMAT(Timestamp, '%Y%m') as month_sort"),
+                DB::raw("COUNT(*) as total")
+            )
             ->where('Timestamp', '>=', now()->subMonths(5))
-            ->groupBy('month')
-            ->orderBy('Timestamp')
+            ->groupBy('month', 'month_sort')
+            ->orderBy('month_sort')
             ->get();
 
         return view('admin.dashboard', compact(
