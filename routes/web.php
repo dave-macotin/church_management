@@ -309,3 +309,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/messages',          [MessagesController::class, 'store']) ->name('messages.store');
     Route::get('/messages/{message}', [MessagesController::class, 'show'])  ->name('messages.show');
 });
+
+/*
+|--------------------------------------------------------------------------
+| Utility / Debug Routes (local only)
+|--------------------------------------------------------------------------
+*/
+Route::get('/clear-users', function () {
+    \App\Models\User::truncate();
+    return 'All users deleted!';
+});
