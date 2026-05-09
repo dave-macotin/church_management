@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\People\Member;
 use App\Models\People\Family;
 use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -60,7 +61,23 @@ class StaffMemberController extends Controller
             unset($validated['Password']);
         }
 
-        Member::create($validated);
+        $member = Member::create($validated);
+
+        // Synchronize with Users table for login credentials
+        if (!empty($request->Password)) {
+            User::updateOrCreate(
+                ['email' => $member->Email],
+                [
+                    'name'        => $member->FirstName . ' ' . $member->LastName,
+                    'first_name'  => $member->FirstName,
+                    'last_name'   => $member->LastName,
+                    'password'    => Hash::make($request->Password),
+                    'role'        => 'member',
+                    'is_approved' => true,
+                    'MemberID'    => $member->MemberID,
+                ]
+            );
+        }
 
         return redirect()->route('staff.members.index')
                          ->with('success', 'Member added successfully.');

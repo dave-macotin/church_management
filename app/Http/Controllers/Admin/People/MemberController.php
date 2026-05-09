@@ -60,7 +60,23 @@ class MemberController extends Controller
             unset($validated['Password']);
         }
 
-        Member::create($validated);
+        $member = Member::create($validated);
+
+        // Synchronize with Users table for login credentials
+        if (!empty($request->Password)) {
+            User::updateOrCreate(
+                ['email' => $member->Email],
+                [
+                    'name'        => $member->FirstName . ' ' . $member->LastName,
+                    'first_name'  => $member->FirstName,
+                    'last_name'   => $member->LastName,
+                    'password'    => Hash::make($request->Password),
+                    'role'        => 'member', // Default role for members
+                    'is_approved' => true,
+                    'MemberID'    => $member->MemberID,
+                ]
+            );
+        }
 
         return redirect()->route('admin.members.index')
                          ->with('success', 'Member added successfully.');
@@ -101,6 +117,21 @@ class MemberController extends Controller
         }
 
         $member->update($validated);
+
+        // Synchronize with Users table for login credentials
+        if (!empty($request->Password)) {
+            User::updateOrCreate(
+                ['email' => $member->Email],
+                [
+                    'name'        => $member->FirstName . ' ' . $member->LastName,
+                    'first_name'  => $member->FirstName,
+                    'last_name'   => $member->LastName,
+                    'password'    => Hash::make($request->Password),
+                    'MemberID'    => $member->MemberID,
+                    // Note: We don't overwrite role or approval status on update
+                ]
+            );
+        }
 
         return redirect()->route('admin.members.index')
                          ->with('success', 'Member updated successfully.');
