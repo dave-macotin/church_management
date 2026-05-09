@@ -80,7 +80,6 @@
                     <td>
                         <div class="flex items-center gap-2 justify-end">
                             <a href="{{ route('staff.members.show', $member) }}" class="btn btn-ghost btn-sm">View</a>
-                            <a href="{{ route('staff.members.edit', $member) }}" class="btn btn-ghost btn-sm">Edit</a>
                         </div>
                     </td>
                 </tr>

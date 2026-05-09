@@ -49,7 +49,6 @@
                 <td class="p-4">
                     <div class="flex items-center gap-2 justify-end">
                         <a href="{{ route('staff.families.show', $family) }}" class="btn btn-ghost" style="padding:0.35rem 0.7rem;font-size:0.8rem">View</a>
-                        <a href="{{ route('staff.families.edit', $family) }}" class="btn btn-ghost" style="padding:0.35rem 0.7rem;font-size:0.8rem">Edit</a>
                     </div>
                 </td>
             </tr>

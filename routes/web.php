@@ -192,8 +192,6 @@ Route::middleware(['auth', 'role:staff'])->prefix('staff')->name('staff.')->grou
         Route::get('/create',        [StaffMemberController::class, 'create'])->name('create');
         Route::post('/',             [StaffMemberController::class, 'store']) ->name('store');
         Route::get('/{member}',      [StaffMemberController::class, 'show'])  ->name('show');
-        Route::get('/{member}/edit', [StaffMemberController::class, 'edit'])  ->name('edit');
-        Route::patch('/{member}',    [StaffMemberController::class, 'update'])->name('update');
     });
 
     Route::prefix('families')->name('families.')->group(function () {
@@ -201,8 +199,6 @@ Route::middleware(['auth', 'role:staff'])->prefix('staff')->name('staff.')->grou
         Route::get('/create',        [StaffFamilyController::class, 'create'])->name('create');
         Route::post('/',             [StaffFamilyController::class, 'store']) ->name('store');
         Route::get('/{family}',      [StaffFamilyController::class, 'show'])  ->name('show');
-        Route::get('/{family}/edit', [StaffFamilyController::class, 'edit'])  ->name('edit');
-        Route::patch('/{family}',    [StaffFamilyController::class, 'update'])->name('update');
     });
 
     Route::prefix('groups')->name('groups.')->group(function () {
@@ -210,8 +206,6 @@ Route::middleware(['auth', 'role:staff'])->prefix('staff')->name('staff.')->grou
         Route::get('/create',       [StaffGroupController::class, 'create'])->name('create');
         Route::post('/',            [StaffGroupController::class, 'store']) ->name('store');
         Route::get('/{group}',      [StaffGroupController::class, 'show'])  ->name('show');
-        Route::get('/{group}/edit', [StaffGroupController::class, 'edit'])  ->name('edit');
-        Route::patch('/{group}',    [StaffGroupController::class, 'update'])->name('update');
     });
 
     // Ministry

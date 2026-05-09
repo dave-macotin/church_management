@@ -34,9 +34,6 @@
                 </div>
             </div>
             
-            <div class="mt-6">
-                 <a href="{{ route('staff.groups.edit', $group) }}" class="btn btn-gold w-full text-xs">Edit Group Info</a>
-            </div>
         </div>
     </div>
 

@@ -53,25 +53,4 @@ class StaffFamilyController extends Controller
         $family->load(['headMember', 'members.role']);
         return view('staff.families.show', compact('family'));
     }
-
-    public function edit(Family $family)
-    {
-        $members = Member::orderBy('LastName')->get();
-        return view('staff.families.edit', compact('family', 'members'));
-    }
-
-    public function update(Request $request, Family $family)
-    {
-        $validated = $request->validate([
-            'FamilyName'  => 'required|string|max:150',
-            'HomeAddress' => 'nullable|string|max:255',
-            'PhoneNumber' => 'nullable|string|max:20',
-            'MemberID'    => 'nullable|exists:members,MemberID',
-        ]);
-
-        $family->update($validated);
-
-        return redirect()->route('staff.families.index')
-                         ->with('success', 'Family updated successfully.');
-    }
 }

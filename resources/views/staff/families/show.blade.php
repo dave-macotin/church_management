@@ -38,9 +38,6 @@
                 </div>
             </div>
             
-            <div class="mt-6">
-                 <a href="{{ route('staff.families.edit', $family) }}" class="btn btn-gold w-full text-xs">Edit Family Info</a>
-            </div>
         </div>
     </div>
 

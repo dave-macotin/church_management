@@ -51,24 +51,4 @@ class StaffGroupController extends Controller
         $group->load(['event', 'roles']);
         return view('staff.groups.show', compact('group'));
     }
-
-    public function edit(Group $group)
-    {
-        $events = Event::orderBy('StartDateTime', 'desc')->get();
-        return view('staff.groups.edit', compact('group', 'events'));
-    }
-
-    public function update(Request $request, Group $group)
-    {
-        $validated = $request->validate([
-            'GroupName'   => 'required|string|max:150',
-            'Description' => 'nullable|string',
-            'EventID'     => 'nullable|exists:events,EventID',
-        ]);
-
-        $group->update($validated);
-
-        return redirect()->route('staff.groups.index')
-                         ->with('success', 'Group updated successfully.');
-    }
 }

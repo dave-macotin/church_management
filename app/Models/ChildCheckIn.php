@@ -8,6 +8,10 @@ class ChildCheckIn extends Model
 {
     protected $fillable = ['child_id', 'parent_id', 'type', 'timestamp', 'session_name'];
 
+    protected $casts = [
+        'timestamp' => 'datetime',
+    ];
+
     public function child()
     {
         return $this->belongsTo(Child::class);

@@ -71,36 +71,4 @@ class StaffMemberController extends Controller
         $member->load(['family', 'role', 'attendances.event']);
         return view('staff.members.show', compact('member'));
     }
-
-    public function edit(Member $member)
-    {
-        $families = Family::orderBy('FamilyName')->get();
-        $roles    = Role::orderBy('RoleName')->get();
-        return view('staff.members.edit', compact('member', 'families', 'roles'));
-    }
-
-    public function update(Request $request, Member $member)
-    {
-        $validated = $request->validate([
-            'FirstName'   => 'required|string|max:100',
-            'LastName'    => 'required|string|max:100',
-            'Email'       => 'nullable|email|max:150|unique:members,Email,' . $member->MemberID . ',MemberID',
-            'PhoneNumber' => 'nullable|string|max:20',
-            'Status'      => 'required|in:Active,Inactive,Pending',
-            'FamilyID'    => 'nullable|exists:families,FamilyID',
-            'RoleID'      => 'nullable|exists:roles,RoleID',
-            'Password'    => 'nullable|string|min:8',
-        ]);
-
-        if (!empty($validated['Password'])) {
-            $validated['Password'] = Hash::make($validated['Password']);
-        } else {
-            unset($validated['Password']);
-        }
-
-        $member->update($validated);
-
-        return redirect()->route('staff.members.index')
-                         ->with('success', 'Member updated successfully.');
-    }
 }
